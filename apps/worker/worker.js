@@ -1,1 +1,5 @@
-console.log("Worker running")
+console.log("Worker started");
+
+setInterval(() => {
+	console.log("Worker heartbeat");
+}, 30000);

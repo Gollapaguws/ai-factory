@@ -1,51 +1,48 @@
 services:
   postgres:
     image: postgres:16
+    restart: unless-stopped
     container_name: ai_factory_postgres
     environment:
       POSTGRES_USER: ai
       POSTGRES_PASSWORD: ai
       POSTGRES_DB: ai_factory
-    ports:
-      - "5432:5432"
     volumes:
       - ./infra/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: redis:7
+    restart: unless-stopped
     container_name: ai_factory_redis
-    ports:
-      - "6379:6379"
 
   orchestrator-api:
     build: ./apps/orchestrator-api
     restart: unless-stopped
     container_name: ai_factory_api
-    environment:
-      DATABASE_URL: postgres://ai:ai@postgres:5432/ai_factory
-      REDIS_URL: redis://redis:6379
-      NODE_ENV: development
+    env_file:
+      - .env
     ports:
-      - "3000:3000"
+      - "${HOST_BIND:-127.0.0.1}:3000:3000"
     depends_on:
       - postgres
       - redis
 
   worker:
     build: ./apps/worker
+    restart: unless-stopped
     container_name: ai_factory_worker
-    environment:
-      DATABASE_URL: postgres://ai:ai@postgres:5432/ai_factory
-      REDIS_URL: redis://redis:6379
+    env_file:
+      - .env
     depends_on:
       - orchestrator-api
 
   web-console:
     build: ./apps/web-console
+    restart: unless-stopped
     container_name: ai_factory_web
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3000
+    env_file:
+      - .env
     ports:
-      - "3001:3000"
+      - "${HOST_BIND:-127.0.0.1}:3001:3000"
     depends_on:
       - orchestrator-api

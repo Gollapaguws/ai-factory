@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "worker.js",
   "scripts": {
-    "start": "node worker.js"
+    "start": "node worker.js",
+    "lint": "eslint . --ext .js"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  }
 }
