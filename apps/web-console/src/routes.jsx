@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
@@ -7,6 +7,7 @@ import FeaturesLab from "./pages/FeaturesLab";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
+import { isAuthenticated } from "./auth";
 
 export default function AppRoutes() {
   return (
@@ -45,6 +46,7 @@ export default function AppRoutes() {
           </ProtectedRoute>
         )}
       />
+      <Route path="*" element={<Navigate to={isAuthenticated() ? "/" : "/login"} replace />} />
     </Routes>
   );
 }

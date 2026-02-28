@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  checkOAuthAllowlist,
   addFeatureExperiment,
   addFeatureComment,
   addFeatureLog,
@@ -85,8 +86,8 @@ export default function useFeaturesLab() {
   const [prompt, setPrompt] = React.useState("Build a role-aware dashboard with API connector and deployment controls.");
   const [selectedModel, setSelectedModel] = React.useState("OpenAI");
   const [generatedOutput, setGeneratedOutput] = React.useState("");
-  const [oauthAllowedUsers, setOauthAllowedUsers] = React.useState("engineer1@example.com,engineer2@example.com");
-  const [oauthCandidate, setOauthCandidate] = React.useState("engineer1@example.com");
+  const [oauthAllowedUsers, setOauthAllowedUsers] = React.useState("alice,bob");
+  const [oauthCandidate, setOauthCandidate] = React.useState("alice");
   const [oauthResult, setOauthResult] = React.useState("Not checked");
   const [template, setTemplate] = React.useState("Dashboard");
   const [deploymentTarget, setDeploymentTarget] = React.useState("Docker Compose");
@@ -307,13 +308,23 @@ export default function useFeaturesLab() {
     setStatusMessage("Generated project scaffold and backend plan");
   }
 
-  function runOAuthCheck() {
-    const allowed = oauthAllowedUsers
-      .split(",")
-      .map((item) => item.trim().toLowerCase())
-      .filter(Boolean);
-    const isAllowed = allowed.includes(oauthCandidate.trim().toLowerCase());
-    setOauthResult(isAllowed ? "Access granted" : "Access denied");
+  async function runOAuthCheck() {
+    const email = oauthCandidate.trim().toLowerCase();
+
+    try {
+      const response = await checkOAuthAllowlist(email);
+      setOauthResult(response.allowed ? `Access granted (${response.provider})` : `Access denied (${response.provider})`);
+      void trackUsage("Ran OAuth allowlist check");
+      return;
+    } catch {
+      const allowed = oauthAllowedUsers
+        .split(",")
+        .map((item) => item.trim().toLowerCase())
+        .filter(Boolean);
+      const isAllowed = allowed.includes(email);
+      setOauthResult(isAllowed ? "Access granted (local fallback)" : "Access denied (local fallback)");
+    }
+
     void trackUsage("Ran OAuth allowlist check");
   }
 

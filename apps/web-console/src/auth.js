@@ -54,6 +54,49 @@ export async function login(username, password) {
   return data;
 }
 
+export async function oauthLogin(identity) {
+  const response = await fetch(`${apiBase}/auth/oauth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ identity })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "OAuth login failed");
+  }
+
+  setToken(data.token);
+  return data;
+}
+
+export async function getOAuthConfig() {
+  const response = await fetch(`${apiBase}/auth/oauth/config`);
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "Failed to load OAuth config");
+  }
+  return data;
+}
+
+export async function checkOAuthAllowlist(identity) {
+  const response = await fetch(`${apiBase}/auth/oauth/allowlist-check`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ identity })
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || "OAuth allowlist check failed");
+  }
+  return data;
+}
+
 export async function register(username, password) {
   const response = await fetch(`${apiBase}/auth/register`, {
     method: "POST",

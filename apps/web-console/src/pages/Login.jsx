@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Page from "../shared/Page";
-import { login } from "../auth";
+import { getOAuthConfig, login, oauthLogin } from "../auth";
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const [username, setUsername] = useState("alice");
   const [password, setPassword] = useState("changeme123");
+  const [oauthIdentity, setOauthIdentity] = useState("alice");
+  const [oauthProvider, setOauthProvider] = useState("OAuth");
+  const [oauthAllowlistHint, setOauthAllowlistHint] = useState("alice, bob");
+  const [oauthLoading, setOauthLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,6 +29,37 @@ export default function Login() {
       setError(loginError.message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    getOAuthConfig()
+      .then((data) => {
+        if (data?.provider) {
+          setOauthProvider(data.provider);
+        }
+        if (Array.isArray(data?.allowlistSample) && data.allowlistSample.length > 0) {
+          setOauthAllowlistHint(data.allowlistSample.join(", "));
+          setOauthIdentity(data.allowlistSample[0]);
+        }
+      })
+      .catch(() => {
+        setOauthProvider("OAuth");
+      });
+  }, []);
+
+  async function handleOAuthLogin(event) {
+    event.preventDefault();
+    setOauthLoading(true);
+    setError("");
+
+    try {
+      await oauthLogin(oauthIdentity);
+      navigate(redirectPath, { replace: true });
+    } catch (oauthError) {
+      setError(oauthError.message);
+    } finally {
+      setOauthLoading(false);
     }
   }
 
@@ -61,7 +96,24 @@ export default function Login() {
         </button>
       </form>
 
-      <p className="hero-subtitle">Demo credentials: alice / changeme123</p>
+      <form className="login-form" onSubmit={handleOAuthLogin}>
+        <label>
+          OAuth identity (email or username)
+          <input
+            type="text"
+            value={oauthIdentity}
+            onChange={(event) => setOauthIdentity(event.target.value)}
+            required
+          />
+        </label>
+
+        <button type="submit" disabled={oauthLoading}>
+          {oauthLoading ? "Signing in with OAuth..." : `Sign in with ${oauthProvider}`}
+        </button>
+      </form>
+
+      <p className="hero-subtitle">Password demo: alice / changeme123</p>
+      <p className="hero-subtitle">OAuth allowlist sample: {oauthAllowlistHint}</p>
     </Page>
   );
 }

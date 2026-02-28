@@ -14,6 +14,11 @@ const tokenTtl = process.env.JWT_TTL || "12h";
 const corsOrigin = process.env.CORS_ORIGIN || "*";
 const jwtIssuer = process.env.JWT_ISSUER || "ai-factory";
 const jwtAudience = process.env.JWT_AUDIENCE || "web-console";
+const oauthProvider = process.env.OAUTH_PROVIDER || "google";
+const oauthAllowedUsers = (process.env.ALLOWED_USERS || "engineer1@example.com,engineer2@example.com")
+  .split(",")
+  .map((value) => value.trim().toLowerCase())
+  .filter(Boolean);
 
 if (process.env.NODE_ENV === "production" && jwtSecret === "change-me-in-production") {
   throw new Error("JWT_SECRET must be set in production");
@@ -156,6 +161,72 @@ function isStrongPassword(password) {
   return hasUpper && hasLower && hasDigit;
 }
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function normalizeIdentity(identity) {
+  return String(identity || "").trim().toLowerCase();
+}
+
+function isValidIdentity(identity) {
+  const normalized = normalizeIdentity(identity);
+  return isValidEmail(normalized) || isValidUsername(normalized);
+}
+
+function identityMatchesAllowlist(identity, allowEntry) {
+  const normalizedIdentity = normalizeIdentity(identity);
+  const normalizedAllowEntry = normalizeIdentity(allowEntry);
+  const identityLocalPart = normalizedIdentity.includes("@")
+    ? normalizedIdentity.split("@")[0]
+    : normalizedIdentity;
+  const allowLocalPart = normalizedAllowEntry.includes("@")
+    ? normalizedAllowEntry.split("@")[0]
+    : normalizedAllowEntry;
+
+  return (
+    normalizedIdentity === normalizedAllowEntry ||
+    identityLocalPart === normalizedAllowEntry ||
+    normalizedIdentity === allowLocalPart ||
+    identityLocalPart === allowLocalPart
+  );
+}
+
+function isAllowedOauthIdentity(identity) {
+  return oauthAllowedUsers.some((entry) => identityMatchesAllowlist(identity, entry));
+}
+
+function resolveOauthRole(email) {
+  const normalized = normalizeIdentity(email);
+  if (oauthAllowedUsers[0] && identityMatchesAllowlist(normalized, oauthAllowedUsers[0])) {
+    return "admin";
+  }
+  return "engineer";
+}
+
+function ensureOauthUser(email) {
+  users = loadUsers();
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const existing = users.find((entry) => entry.username.toLowerCase() === normalizedEmail);
+  if (existing) {
+    existing.role = resolveOauthRole(normalizedEmail);
+    saveUsers(users);
+    return existing;
+  }
+
+  const nextId = users.length ? Math.max(...users.map((entry) => entry.id)) + 1 : 1;
+  const created = {
+    id: nextId,
+    username: normalizedEmail,
+    role: resolveOauthRole(normalizedEmail),
+    passwordHash: bcrypt.hashSync(`oauth-${Date.now()}`, 10)
+  };
+
+  users.push(created);
+  saveUsers(users);
+  return created;
+}
+
 app.get("/", (_req, res) => {
   res.json({ status: "ok", service: "orchestrator-api" });
 });
@@ -242,6 +313,54 @@ app.get("/auth/me", authMiddleware, (req, res) => {
       id: req.user.sub,
       username: req.user.username,
       role: req.user.role
+    }
+  });
+});
+
+app.get("/auth/oauth/config", (_req, res) => {
+  return res.json({
+    provider: oauthProvider,
+    enabled: true,
+    allowlistCount: oauthAllowedUsers.length,
+    allowlistSample: oauthAllowedUsers.slice(0, 5)
+  });
+});
+
+app.post("/auth/oauth/allowlist-check", authLimiter, (req, res) => {
+  const { email, identity } = req.body || {};
+  const normalizedIdentity = normalizeIdentity(identity || email);
+  if (!isValidIdentity(normalizedIdentity)) {
+    return res.status(400).json({ error: "valid identity is required" });
+  }
+  const allowed = isAllowedOauthIdentity(normalizedIdentity);
+  return res.json({
+    provider: oauthProvider,
+    identity: normalizedIdentity,
+    allowed
+  });
+});
+
+app.post("/auth/oauth/login", authLimiter, (req, res) => {
+  const { email, identity } = req.body || {};
+  const normalizedIdentity = normalizeIdentity(identity || email);
+
+  if (!isValidIdentity(normalizedIdentity)) {
+    return res.status(400).json({ error: "valid identity is required" });
+  }
+
+  if (!isAllowedOauthIdentity(normalizedIdentity)) {
+    return res.status(403).json({ error: "identity is not in OAuth allowlist" });
+  }
+
+  const oauthUser = ensureOauthUser(normalizedIdentity);
+  const token = signToken(oauthUser);
+  return res.json({
+    token,
+    user: {
+      id: oauthUser.id,
+      username: oauthUser.username,
+      role: oauthUser.role,
+      provider: oauthProvider
     }
   });
 });
