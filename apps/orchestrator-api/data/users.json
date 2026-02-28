@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "username": "alice",
+    "role": "admin",
+    "passwordHash": "$2a$10$ouQJAaNLzKyw4uw11OYJD.K62phmfAUNWQ3IBwA6L43//koQSGkOS"
+  },
+  {
+    "id": 2,
+    "username": "bob",
+    "role": "engineer",
+    "passwordHash": "$2a$10$iHkKop3SrLp8Kr.oCPFypOd8sEtnXp.qX01qXG.pV7dU9wnhLf/mS"
+  },
+  {
+    "id": 3,
+    "username": "user1772292788",
+    "role": "viewer",
+    "passwordHash": "$2a$10$rx3hY8vEgc2TIwBU2WQZ2.1JqogUt94paqa0zp5bJ/QT6vL3hHZ0u"
+  },
+  {
+    "id": 4,
+    "username": "featurecheck_user",
+    "role": "viewer",
+    "passwordHash": "$2a$10$ItXYxBBNSqiEk1RN0mRSd.Gtlfp/B6Rmkx9ybTII9HykSURAPgD42"
+  },
+  {
+    "id": 5,
+    "username": "smoke_1772294683",
+    "role": "viewer",
+    "passwordHash": "$2a$10$QfXVP.oczDGQuD9RZqcF4ejsW2lMuung7oNL5ZcNFH7fg0Tl9.aa6"
+  },
+  {
+    "id": 6,
+    "username": "smoke_1772294696",
+    "role": "viewer",
+    "passwordHash": "$2a$10$hvguKsVnCOi7y2bM6tlJN.VE6wvjXQZ/B.L2Ah9c0MOlSQHxzKoSm"
+  }
+]

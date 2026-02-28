@@ -43,6 +43,6 @@ services:
     env_file:
       - .env
     ports:
-      - "${HOST_BIND:-127.0.0.1}:3001:3000"
+      - "${HOST_BIND:-127.0.0.1}:3001:3001"
     depends_on:
       - orchestrator-api
