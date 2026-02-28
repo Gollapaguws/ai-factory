@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.4",
+    "eslint": "^10.0.2"
+  }
+}

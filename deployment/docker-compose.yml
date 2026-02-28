@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  orchestrator-api:
+    build: ../apps/orchestrator-api
+    ports:
+      - "3000:3000"
+  web-console:
+    build: ../apps/web-console
+    ports:
+      - "3001:3001"
+  worker:
+    build: ../apps/worker
+    ports:
+      - "3002:3002"

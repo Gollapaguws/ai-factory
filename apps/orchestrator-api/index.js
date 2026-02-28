@@ -1,24 +1,7 @@
 const http = require("http");
-
-const port = process.env.PORT || 3000;
-
 const server = http.createServer((req, res) => {
-	if (req.url === "/health") {
-		res.writeHead(200, { "Content-Type": "application/json" });
-		res.end(JSON.stringify({ status: "ok", service: "orchestrator-api" }));
-		return;
-	}
-
-	if (req.url === "/") {
-		res.writeHead(200, { "Content-Type": "application/json" });
-		res.end(JSON.stringify({ message: "Orchestrator API running" }));
-		return;
-	}
-
-	res.writeHead(404, { "Content-Type": "application/json" });
-	res.end(JSON.stringify({ error: "Not Found" }));
+  res.end("Orchestrator API running");
 });
-
-server.listen(port, () => {
-	console.log(`Orchestrator API listening on port ${port}`);
+server.listen(3000, () => {
+  console.log("Orchestrator API running");
 });

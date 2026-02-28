@@ -1,0 +1,9 @@
+// Example template for a dashboard app
+{
+  "name": "Dashboard App",
+  "description": "A simple dashboard with charts and tables.",
+  "files": {
+    "src/pages/Dashboard.js": "import React from 'react';\nexport default function Dashboard() { return <div>Dashboard</div>; }",
+    "src/components/Chart.js": "import React from 'react';\nexport default function Chart() { return <div>Chart</div>; }"
+  }
+}

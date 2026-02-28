@@ -4,10 +4,15 @@
   "main": "worker.js",
   "scripts": {
     "start": "node worker.js",
-    "lint": "eslint . --ext .js"
+    "dev": "vite",
+    "build": "vite build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.1"
+  },
   "devDependencies": {
-    "eslint": "^8.57.1"
+    "@vitejs/plugin-react": "^5.1.4"
   }
 }
