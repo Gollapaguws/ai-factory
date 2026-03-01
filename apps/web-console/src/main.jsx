@@ -42,6 +42,9 @@ function App() {
 
   return (
     <BrowserRouter>
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <div className="top-nav">
         <div className="app-brand">AI Factory</div>
         <NavBar links={links} />
@@ -51,7 +54,7 @@ function App() {
           </button>
         ) : null}
       </div>
-      <main className="main-content">
+      <main id="main-content" className="main-content" tabIndex="-1">
         <AppRoutes />
       </main>
     </BrowserRouter>

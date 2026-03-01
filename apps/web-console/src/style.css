@@ -6,6 +6,25 @@ body {
   min-height: 100vh;
 }
 
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -50px;
+  z-index: 100;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid rgba(129, 140, 248, 0.75);
+}
+
+.skip-link:focus-visible {
+  top: 0.75rem;
+  outline: 2px solid rgba(129, 140, 248, 0.95);
+  outline-offset: 2px;
+}
+
 .top-nav {
   position: sticky;
   top: 0;
