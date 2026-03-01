@@ -12,6 +12,16 @@ function nextStatus(currentStatus) {
   return statusOrder[index + 1];
 }
 
+function statusClass(status) {
+  if (status === "ready") {
+    return "status-pill status-pill-ready";
+  }
+  if (status === "building") {
+    return "status-pill status-pill-building";
+  }
+  return "status-pill status-pill-draft";
+}
+
 export default function Dashboard() {
   const [name, setName] = React.useState("");
   const [prompt, setPrompt] = React.useState("");
@@ -31,6 +41,7 @@ export default function Dashboard() {
   }, []);
 
   const selectedProject = projects.find((project) => project.id === selectedId) || null;
+  const readyCount = projects.filter((project) => project.status === "ready").length;
 
   React.useEffect(() => {
     if (!selectedProject) {
@@ -121,6 +132,21 @@ export default function Dashboard() {
         Create projects from natural language prompts and track their build state locally.
       </p>
 
+      <div className="grid">
+        <section className="metric">
+          <h4>Total Projects</h4>
+          <p>{projects.length}</p>
+        </section>
+        <section className="metric">
+          <h4>Ready</h4>
+          <p>{readyCount}</p>
+        </section>
+        <section className="metric">
+          <h4>Selected</h4>
+          <p>{selectedProject?.name || "None"}</p>
+        </section>
+      </div>
+
       <section className="capabilities">
         <h2 className="section-title">Create Project</h2>
         <form className="login-form" onSubmit={handleCreateProject}>
@@ -158,15 +184,17 @@ export default function Dashboard() {
         {projects.length === 0 ? (
           <p className="hero-subtitle">No projects yet. Create one to start your build flow.</p>
         ) : (
-          <div className="capability-grid">
+          <div className="capability-grid project-grid">
             {projects.map((project) => (
               <article
                 key={project.id}
-                className={`capability-card ${project.id === selectedId ? "capability-selected" : ""}`}
+                className={`capability-card project-card ${project.id === selectedId ? "capability-selected" : ""}`}
               >
                 <h3>{project.name}</h3>
                 <p>{project.prompt}</p>
-                <p className="hero-subtitle">Status: {project.status}</p>
+                <p className="hero-subtitle">
+                  Status: <span className={statusClass(project.status)}>{project.status}</span>
+                </p>
                 <div className="action-row">
                   <button type="button" className="capability-action" onClick={() => setSelectedId(project.id)}>
                     Select
@@ -191,7 +219,9 @@ export default function Dashboard() {
           <article className="capability-card capability-selected">
             <h3>{selectedProject.name}</h3>
             <p>{selectedProject.prompt}</p>
-            <p className="hero-subtitle">Build status: {selectedProject.status}</p>
+            <p className="hero-subtitle">
+              Build status: <span className={statusClass(selectedProject.status)}>{selectedProject.status}</span>
+            </p>
             <p className="hero-subtitle">Updated: {new Date(selectedProject.updatedAt).toLocaleString()}</p>
 
             <form className="login-form" onSubmit={handleSaveEdits}>

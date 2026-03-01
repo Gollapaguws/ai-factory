@@ -96,6 +96,7 @@ main,
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 12px;
   padding: 0.85rem;
+  min-height: 84px;
 }
 
 .metric h4 {
@@ -111,6 +112,7 @@ main,
   font-size: 1.35rem;
   font-weight: 700;
   color: #f8fafc;
+  overflow-wrap: anywhere;
 }
 
 .pill-row {
@@ -246,11 +248,21 @@ main,
   gap: 0.75rem;
 }
 
+.project-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
 .capability-card {
   background: rgba(15, 23, 42, 0.55);
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 12px;
   padding: 0.8rem;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(129, 140, 248, 0.55);
 }
 
 .capability-selected {
@@ -269,6 +281,44 @@ main,
   color: #94a3b8;
   font-size: 0.88rem;
   line-height: 1.4;
+}
+
+.status-banner {
+  margin-top: 1rem;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  background: rgba(30, 64, 175, 0.16);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.14rem 0.58rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-left: 0.35rem;
+}
+
+.status-pill-draft {
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(71, 85, 105, 0.34);
+}
+
+.status-pill-building {
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.55);
+  background: rgba(146, 64, 14, 0.35);
+}
+
+.status-pill-ready {
+  color: #bbf7d0;
+  border: 1px solid rgba(34, 197, 94, 0.55);
+  background: rgba(21, 128, 61, 0.34);
 }
 
 .capability-action {
@@ -366,6 +416,29 @@ body.light-mode .hero-subtitle,
 body.light-mode .capability-card p,
 body.light-mode .section-title {
   color: #334155;
+}
+
+body.light-mode .status-banner {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(191, 219, 254, 0.45);
+}
+
+body.light-mode .status-pill-draft {
+  color: #334155;
+  border-color: rgba(100, 116, 139, 0.4);
+  background: rgba(226, 232, 240, 0.8);
+}
+
+body.light-mode .status-pill-building {
+  color: #92400e;
+  border-color: rgba(245, 158, 11, 0.45);
+  background: rgba(254, 243, 199, 0.9);
+}
+
+body.light-mode .status-pill-ready {
+  color: #166534;
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(220, 252, 231, 0.9);
 }
 
 @media (max-width: 860px) {

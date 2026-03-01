@@ -96,7 +96,22 @@ export default function FeaturesLab() {
       <p className="hero-subtitle">
         Each feature listed in README is wired to a working MVP interaction in this workspace.
       </p>
-      {statusMessage ? <p className="status-good">{statusMessage}</p> : null}
+      <div className="grid">
+        <section className="metric">
+          <h4>Coverage Items</h4>
+          <p>{allFeatureItems.length}</p>
+        </section>
+        <section className="metric">
+          <h4>Selected Model</h4>
+          <p>{selectedModel}</p>
+        </section>
+        <section className="metric">
+          <h4>Active Project</h4>
+          <p>{selectedProject?.name || "None"}</p>
+        </section>
+      </div>
+
+      {statusMessage ? <p className="status-banner status-good">{statusMessage}</p> : null}
 
       <CoverageSection allFeatureItems={allFeatureItems} />
       <CoreBuilderSection
