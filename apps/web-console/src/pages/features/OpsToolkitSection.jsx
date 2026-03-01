@@ -24,20 +24,20 @@ export default function OpsToolkitSection({
         <article className="capability-card">
           <h3>Backup, Restore, A/B, Dependency Updates</h3>
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={createBackup}>
+            <button type="button" className="btn btn-primary" onClick={createBackup}>
               Create Backup
             </button>
-            <button type="button" className="capability-action" onClick={restoreBackup}>
+            <button type="button" className="btn btn-secondary" onClick={restoreBackup}>
               Restore Backup
             </button>
           </div>
           <textarea value={backupBlob} onChange={(event) => setBackupBlob(event.target.value)} rows={5} />
           <div className="action-row">
             <input value={abName} onChange={(event) => setAbName(event.target.value)} />
-            <button type="button" className="capability-action" onClick={addExperiment}>
+            <button type="button" className="btn btn-primary" onClick={addExperiment}>
               Add A/B Test
             </button>
-            <button type="button" className="capability-action" onClick={checkDependencies}>
+            <button type="button" className="btn btn-secondary" onClick={checkDependencies}>
               Check Dependencies
             </button>
           </div>
@@ -48,10 +48,10 @@ export default function OpsToolkitSection({
           <h3>Data Import / Export + Analytics</h3>
           <textarea value={importCsv} onChange={(event) => setImportCsv(event.target.value)} rows={5} />
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={importCsvData}>
+            <button type="button" className="btn btn-primary" onClick={importCsvData}>
               Import CSV
             </button>
-            <button type="button" className="capability-action" onClick={exportProjects}>
+            <button type="button" className="btn btn-secondary" onClick={exportProjects}>
               Export JSON
             </button>
           </div>

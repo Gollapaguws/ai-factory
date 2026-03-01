@@ -24,10 +24,10 @@ export default function TemplatesDeploySection({
             <option>Mobile App</option>
           </select>
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={generateMobileScaffold}>
+            <button type="button" className="btn btn-primary" onClick={generateMobileScaffold}>
               Generate Template Scaffold
             </button>
-            <button type="button" className="capability-action" onClick={generateTests}>
+            <button type="button" className="btn btn-secondary" onClick={generateTests}>
               Generate Tests
             </button>
           </div>
@@ -40,13 +40,13 @@ export default function TemplatesDeploySection({
             <option>Kubernetes</option>
           </select>
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={copyDeployCommand}>
+            <button type="button" className="btn btn-primary" onClick={copyDeployCommand}>
               One-Click Deploy Command
             </button>
-            <button type="button" className="capability-action" onClick={appendCommit}>
+            <button type="button" className="btn btn-secondary" onClick={appendCommit}>
               Add Commit
             </button>
-            <button type="button" className="capability-action" onClick={rollbackCommit}>
+            <button type="button" className="btn btn-danger" onClick={rollbackCommit}>
               Rollback
             </button>
           </div>

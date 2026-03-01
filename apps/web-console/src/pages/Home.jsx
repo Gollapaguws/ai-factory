@@ -87,10 +87,10 @@ export default function Home() {
       </div>
 
       <div className="action-row">
-        <button type="button" className="logout-btn" onClick={refreshProfile}>
+        <button type="button" className="btn btn-secondary" onClick={refreshProfile}>
           Refresh Session
         </button>
-        <button type="button" className="logout-btn" onClick={refreshApiStatus}>
+        <button type="button" className="btn btn-secondary" onClick={refreshApiStatus}>
           Test API
         </button>
       </div>
@@ -114,7 +114,7 @@ export default function Home() {
               <p>{capability.detail}</p>
               <button
                 type="button"
-                className="capability-action"
+                  className="btn btn-primary"
                 onClick={() => setSelectedCapability(capability.title)}
               >
                 {capability.action}

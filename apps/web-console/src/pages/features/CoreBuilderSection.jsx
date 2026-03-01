@@ -29,7 +29,7 @@ export default function CoreBuilderSection({
             </select>
           </label>
           <textarea value={prompt} onChange={(event) => setPrompt(event.target.value)} rows={4} />
-          <button type="button" className="capability-action" onClick={generateFromPrompt}>
+          <button type="button" className="btn btn-primary" onClick={generateFromPrompt}>
             Generate App + Backend Plan
           </button>
         </article>
@@ -40,7 +40,7 @@ export default function CoreBuilderSection({
           <p className="hero-subtitle">Current role: {profile?.role || "viewer"}</p>
           <input value={oauthAllowedUsers} onChange={(event) => setOauthAllowedUsers(event.target.value)} />
           <input value={oauthCandidate} onChange={(event) => setOauthCandidate(event.target.value)} />
-          <button type="button" className="capability-action" onClick={runOAuthCheck}>
+          <button type="button" className="btn btn-primary" onClick={runOAuthCheck}>
             Validate OAuth Access
           </button>
           <p className="hero-subtitle">Result: {oauthResult}</p>

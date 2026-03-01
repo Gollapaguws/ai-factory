@@ -175,7 +175,7 @@ export default function Dashboard() {
           {error ? <p className="error-text">{error}</p> : null}
           {success ? <p className="status-good">{success}</p> : null}
 
-          <button type="submit">Create project</button>
+          <button type="submit" className="btn btn-primary">Create project</button>
         </form>
       </section>
 
@@ -196,12 +196,12 @@ export default function Dashboard() {
                   Status: <span className={statusClass(project.status)}>{project.status}</span>
                 </p>
                 <div className="action-row">
-                  <button type="button" className="capability-action" onClick={() => setSelectedId(project.id)}>
+                  <button type="button" className="btn btn-secondary" onClick={() => setSelectedId(project.id)}>
                     Select
                   </button>
                   <button
                     type="button"
-                    className="capability-action"
+                    className="btn btn-primary"
                     onClick={() => handleAdvanceStatus(project.id)}
                   >
                     Advance Status
@@ -246,12 +246,12 @@ export default function Dashboard() {
               </label>
 
               <div className="action-row">
-                <button type="submit" className="capability-action">
+                <button type="submit" className="btn btn-primary">
                   Save Changes
                 </button>
                 <button
                   type="button"
-                  className="capability-action danger-action"
+                  className="btn btn-danger"
                   onClick={handleDeleteSelected}
                 >
                   Delete Project

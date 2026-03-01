@@ -29,7 +29,7 @@ export default function AdvancedControlsSection({
               <button
                 key={plugin.key || plugin.name}
                 type="button"
-                className="capability-action"
+                className="btn btn-secondary"
                 onClick={() => togglePlugin(plugin.name || plugin.label || plugin.key)}
               >
                 {plugin.label || plugin.name}: {plugin.enabled ? "ON" : "OFF"}
@@ -38,13 +38,13 @@ export default function AdvancedControlsSection({
           </div>
           <div className="action-row">
             <input value={workflowStep} onChange={(event) => setWorkflowStep(event.target.value)} />
-            <button type="button" className="capability-action" onClick={addWorkflowStep}>
+            <button type="button" className="btn btn-primary" onClick={addWorkflowStep}>
               Add Workflow Step
             </button>
           </div>
           <div className="action-row">
             <input value={collabDraft} onChange={(event) => setCollabDraft(event.target.value)} />
-            <button type="button" className="capability-action" onClick={sendCollabNote}>
+            <button type="button" className="btn btn-primary" onClick={sendCollabNote}>
               Share Realtime Note
             </button>
           </div>
@@ -60,13 +60,13 @@ export default function AdvancedControlsSection({
             placeholder="secret value"
           />
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={addSecret}>
+            <button type="button" className="btn btn-primary" onClick={addSecret}>
               Save Secret
             </button>
-            <button type="button" className="capability-action" onClick={measurePerformance}>
+            <button type="button" className="btn btn-secondary" onClick={measurePerformance}>
               Measure Performance
             </button>
-            <button type="button" className="capability-action" onClick={() => setIsLightTheme((value) => !value)}>
+            <button type="button" className="btn btn-secondary" onClick={() => setIsLightTheme((value) => !value)}>
               Toggle Theme
             </button>
           </div>

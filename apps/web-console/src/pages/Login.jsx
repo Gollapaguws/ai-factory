@@ -93,7 +93,7 @@ export default function Login() {
 
         {error ? <p className="error-text">{error}</p> : null}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
           {loading ? "Signing in..." : "Sign in"}
         </button>
       </form>
@@ -109,7 +109,7 @@ export default function Login() {
           />
         </label>
 
-        <button type="submit" disabled={oauthLoading}>
+        <button type="submit" className="btn btn-primary" disabled={oauthLoading}>
           {oauthLoading ? "Signing in with OAuth..." : `Sign in with ${oauthProvider}`}
         </button>
       </form>

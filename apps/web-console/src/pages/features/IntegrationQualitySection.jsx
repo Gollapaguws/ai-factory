@@ -24,13 +24,13 @@ export default function IntegrationQualitySection({
           <h3>Code Injection + Review + Docs</h3>
           <textarea value={codeSnippet} onChange={(event) => setCodeSnippet(event.target.value)} rows={5} />
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={saveCodeInjection}>
+            <button type="button" className="btn btn-primary" onClick={saveCodeInjection}>
               Save Custom Code
             </button>
-            <button type="button" className="capability-action" onClick={runCodeReview}>
+            <button type="button" className="btn btn-secondary" onClick={runCodeReview}>
               AI Code Review
             </button>
-            <button type="button" className="capability-action" onClick={generateDocs}>
+            <button type="button" className="btn btn-secondary" onClick={generateDocs}>
               Generate Docs
             </button>
           </div>
@@ -41,14 +41,14 @@ export default function IntegrationQualitySection({
           <h3>API Connector + ChatOps + Webhooks</h3>
           <input value={apiConnector} onChange={(event) => setApiConnector(event.target.value)} />
           <div className="action-row">
-            <button type="button" className="capability-action" onClick={addConnector}>
+            <button type="button" className="btn btn-primary" onClick={addConnector}>
               Add Connector
             </button>
           </div>
           <input value={chatCommand} onChange={(event) => setChatCommand(event.target.value)} />
           <p className="hero-subtitle">ChatOps Preview: {chatCommand}</p>
           <input value={webhookUrl} onChange={(event) => setWebhookUrl(event.target.value)} />
-          <button type="button" className="capability-action" onClick={triggerWebhook}>
+          <button type="button" className="btn btn-primary" onClick={triggerWebhook}>
             Trigger Event
           </button>
         </article>
