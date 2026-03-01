@@ -82,6 +82,11 @@ main,
   margin: 0;
   color: #94a3b8;
   font-size: 1rem;
+  line-height: 1.45;
+}
+
+.hero-subtitle + .hero-subtitle {
+  margin-top: 0.35rem;
 }
 
 .grid {
@@ -142,6 +147,7 @@ main,
   gap: 0.35rem;
   color: #cbd5e1;
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .login-form input {
@@ -301,6 +307,7 @@ main,
   margin: 0;
   font-size: 0.95rem;
   color: #e2e8f0;
+  line-height: 1.35;
 }
 
 .capability-card p {
@@ -308,6 +315,11 @@ main,
   color: #94a3b8;
   font-size: 0.88rem;
   line-height: 1.4;
+}
+
+.capability-card .hero-subtitle {
+  margin-top: 0.55rem;
+  font-size: 0.9rem;
 }
 
 .status-banner {

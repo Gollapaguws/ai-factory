@@ -43,6 +43,7 @@ export default function Register() {
             type="text"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
+            placeholder="alice"
             minLength={3}
             required
           />
@@ -54,6 +55,7 @@ export default function Register() {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            placeholder="••••••••••"
             minLength={10}
             pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{10,128}"
             title="At least 10 characters with uppercase, lowercase, and a number"
@@ -67,6 +69,7 @@ export default function Register() {
             type="password"
             value={confirmPassword}
             onChange={(event) => setConfirmPassword(event.target.value)}
+            placeholder="••••••••••"
             minLength={10}
             pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{10,128}"
             title="At least 10 characters with uppercase, lowercase, and a number"
@@ -76,7 +79,7 @@ export default function Register() {
 
         {error ? <p className="error-text">{error}</p> : null}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
           {loading ? "Creating account..." : "Create account"}
         </button>
       </form>

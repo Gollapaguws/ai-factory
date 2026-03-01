@@ -56,7 +56,7 @@ export default function About() {
         </section>
         <section className="metric">
           <h4>Stack</h4>
-          <p>React + Vite + Nginx</p>
+          <p>React + Vite + Express</p>
         </section>
         <section className="metric">
           <h4>API Base</h4>
@@ -70,7 +70,7 @@ export default function About() {
           <article className="capability-card">
             <h3>API Reachability</h3>
             <p>Calls the API root endpoint and checks for a successful status response.</p>
-            <button type="button" className="capability-action" onClick={runApiCheck}>
+            <button type="button" className="btn btn-primary" onClick={runApiCheck}>
               Run API Check
             </button>
             <p className="hero-subtitle">Result: {getCheckLabel(checks.api)}</p>
@@ -79,7 +79,7 @@ export default function About() {
           <article className="capability-card">
             <h3>Session Validation</h3>
             <p>Calls the authenticated profile endpoint and validates the current token.</p>
-            <button type="button" className="capability-action" onClick={runAuthCheck}>
+            <button type="button" className="btn btn-primary" onClick={runAuthCheck}>
               Run Auth Check
             </button>
             <p className="hero-subtitle">Result: {getCheckLabel(checks.auth)}</p>
