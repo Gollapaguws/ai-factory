@@ -28,7 +28,12 @@ export default function CoreBuilderSection({
               <option>Anthropic</option>
             </select>
           </label>
-          <textarea value={prompt} onChange={(event) => setPrompt(event.target.value)} rows={4} />
+          <textarea
+            aria-label="App generation prompt"
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
+            rows={4}
+          />
           <button type="button" className="btn btn-primary" onClick={generateFromPrompt}>
             Generate App + Backend Plan
           </button>
@@ -38,8 +43,18 @@ export default function CoreBuilderSection({
           <h3>OAuth + Role Access</h3>
           <p>Allowlist validation for the two-engineer OAuth policy plus current role view.</p>
           <p className="hero-subtitle">Current role: {profile?.role || "viewer"}</p>
-          <input value={oauthAllowedUsers} onChange={(event) => setOauthAllowedUsers(event.target.value)} />
-          <input value={oauthCandidate} onChange={(event) => setOauthCandidate(event.target.value)} />
+          <input
+            aria-label="OAuth allowlist identities"
+            placeholder="alice@example.com,bob@example.com"
+            value={oauthAllowedUsers}
+            onChange={(event) => setOauthAllowedUsers(event.target.value)}
+          />
+          <input
+            aria-label="OAuth identity to validate"
+            placeholder="identity to validate"
+            value={oauthCandidate}
+            onChange={(event) => setOauthCandidate(event.target.value)}
+          />
           <button type="button" className="btn btn-primary" onClick={runOAuthCheck}>
             Validate OAuth Access
           </button>

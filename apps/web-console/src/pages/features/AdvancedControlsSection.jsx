@@ -30,6 +30,7 @@ export default function AdvancedControlsSection({
                 key={plugin.key || plugin.name}
                 type="button"
                 className="btn btn-secondary"
+                aria-pressed={plugin.enabled}
                 onClick={() => togglePlugin(plugin.name || plugin.label || plugin.key)}
               >
                 {plugin.label || plugin.name}: {plugin.enabled ? "ON" : "OFF"}
@@ -37,13 +38,23 @@ export default function AdvancedControlsSection({
             ))}
           </div>
           <div className="action-row">
-            <input value={workflowStep} onChange={(event) => setWorkflowStep(event.target.value)} />
+            <input
+              aria-label="Workflow step name"
+              placeholder="Step name"
+              value={workflowStep}
+              onChange={(event) => setWorkflowStep(event.target.value)}
+            />
             <button type="button" className="btn btn-primary" onClick={addWorkflowStep}>
               Add Workflow Step
             </button>
           </div>
           <div className="action-row">
-            <input value={collabDraft} onChange={(event) => setCollabDraft(event.target.value)} />
+            <input
+              aria-label="Collaboration note"
+              placeholder="Write a note"
+              value={collabDraft}
+              onChange={(event) => setCollabDraft(event.target.value)}
+            />
             <button type="button" className="btn btn-primary" onClick={sendCollabNote}>
               Share Realtime Note
             </button>
@@ -52,9 +63,15 @@ export default function AdvancedControlsSection({
 
         <article className="capability-card">
           <h3>Secrets + Perf + Theming</h3>
-          <input value={secretName} onChange={(event) => setSecretName(event.target.value)} />
+          <input
+            aria-label="Secret name"
+            placeholder="SECRET_KEY"
+            value={secretName}
+            onChange={(event) => setSecretName(event.target.value)}
+          />
           <input
             type="password"
+            aria-label="Secret value"
             value={secretValue}
             onChange={(event) => setSecretValue(event.target.value)}
             placeholder="secret value"

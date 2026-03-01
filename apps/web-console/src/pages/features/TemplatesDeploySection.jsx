@@ -17,7 +17,7 @@ export default function TemplatesDeploySection({
       <div className="two-col">
         <article className="capability-card">
           <h3>Templates + Mobile Scaffold</h3>
-          <select value={template} onChange={(event) => setTemplate(event.target.value)}>
+          <select aria-label="Template type" value={template} onChange={(event) => setTemplate(event.target.value)}>
             <option>Dashboard</option>
             <option>CRUD App</option>
             <option>Data Visualizer</option>
@@ -35,7 +35,7 @@ export default function TemplatesDeploySection({
 
         <article className="capability-card">
           <h3>Deployment + Version Control</h3>
-          <select value={deploymentTarget} onChange={(event) => setDeploymentTarget(event.target.value)}>
+          <select aria-label="Deployment target" value={deploymentTarget} onChange={(event) => setDeploymentTarget(event.target.value)}>
             <option>Docker Compose</option>
             <option>Kubernetes</option>
           </select>

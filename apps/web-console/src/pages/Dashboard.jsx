@@ -172,8 +172,8 @@ export default function Dashboard() {
             />
           </label>
 
-          {error ? <p className="error-text">{error}</p> : null}
-          {success ? <p className="status-good">{success}</p> : null}
+          {error ? <p className="error-text" role="alert">{error}</p> : null}
+          {success ? <p className="status-good" role="status" aria-live="polite">{success}</p> : null}
 
           <button type="submit" className="btn btn-primary">Create project</button>
         </form>

@@ -56,6 +56,14 @@ body {
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
 }
 
+.app-nav a:focus-visible,
+.btn:focus-visible,
+.capability-action:focus-visible,
+.logout-btn:focus-visible {
+  outline: 2px solid rgba(129, 140, 248, 0.95);
+  outline-offset: 2px;
+}
+
 main,
 .main-content {
   max-width: 1060px;

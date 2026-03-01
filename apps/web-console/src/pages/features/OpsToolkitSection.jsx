@@ -31,9 +31,19 @@ export default function OpsToolkitSection({
               Restore Backup
             </button>
           </div>
-          <textarea value={backupBlob} onChange={(event) => setBackupBlob(event.target.value)} rows={5} />
+          <textarea
+            aria-label="Backup payload"
+            value={backupBlob}
+            onChange={(event) => setBackupBlob(event.target.value)}
+            rows={5}
+          />
           <div className="action-row">
-            <input value={abName} onChange={(event) => setAbName(event.target.value)} />
+            <input
+              aria-label="A/B experiment name"
+              placeholder="experiment name"
+              value={abName}
+              onChange={(event) => setAbName(event.target.value)}
+            />
             <button type="button" className="btn btn-primary" onClick={addExperiment}>
               Add A/B Test
             </button>
@@ -46,7 +56,12 @@ export default function OpsToolkitSection({
 
         <article className="capability-card">
           <h3>Data Import / Export + Analytics</h3>
-          <textarea value={importCsv} onChange={(event) => setImportCsv(event.target.value)} rows={5} />
+          <textarea
+            aria-label="CSV data import"
+            value={importCsv}
+            onChange={(event) => setImportCsv(event.target.value)}
+            rows={5}
+          />
           <div className="action-row">
             <button type="button" className="btn btn-primary" onClick={importCsvData}>
               Import CSV

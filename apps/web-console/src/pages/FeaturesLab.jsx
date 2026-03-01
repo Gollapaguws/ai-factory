@@ -111,7 +111,11 @@ export default function FeaturesLab() {
         </section>
       </div>
 
-      {statusMessage ? <p className="status-banner status-good">{statusMessage}</p> : null}
+      {statusMessage ? (
+        <p className="status-banner status-good" role="status" aria-live="polite">
+          {statusMessage}
+        </p>
+      ) : null}
 
       <CoverageSection allFeatureItems={allFeatureItems} />
       <CoreBuilderSection
