@@ -4,10 +4,20 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
-app.use(express.static(path.join(__dirname)));
+const distDir = path.join(__dirname, "dist");
+
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok", service: "web-console" });
+});
+
+app.use(express.static(distDir));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(distDir, "index.html"));
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(distDir, "index.html"));
 });
 
 const PORT = process.env.PORT || 3001;

@@ -1,9 +1,20 @@
 const tokenKey = "ai_factory_auth_token";
+const authChangedEvent = "ai_factory_auth_changed";
+
+function normalizeBaseUrl(value) {
+  return String(value || "").trim().replace(/\/$/, "");
+}
 
 function resolveApiBase() {
-  const configured = import.meta.env.VITE_API_BASE_URL;
+  const configured = normalizeBaseUrl(import.meta.env.VITE_API_BASE_URL || import.meta.env.NEXT_PUBLIC_API_URL);
   if (configured) {
     return configured;
+  }
+
+  const { protocol, hostname, port, origin } = window.location;
+
+  if (port === "3001") {
+    return `${protocol}//${hostname}:3000`;
   }
 
   const host = window.location.hostname;
@@ -11,7 +22,11 @@ function resolveApiBase() {
     return `${window.location.protocol}//${host}:3000`;
   }
 
-  return "https://ai.infinitecraftmedia.com";
+  if (host === "ai.infinitecraftmedia.com") {
+    return "https://api.ai.infinitecraftmedia.com";
+  }
+
+  return origin;
 }
 
 const apiBase = resolveApiBase();
@@ -26,14 +41,27 @@ export function getToken() {
 
 export function setToken(token) {
   localStorage.setItem(tokenKey, token);
+  window.dispatchEvent(new Event(authChangedEvent));
 }
 
 export function clearToken() {
   localStorage.removeItem(tokenKey);
+  window.dispatchEvent(new Event(authChangedEvent));
 }
 
 export function isAuthenticated() {
   return Boolean(getToken());
+}
+
+export function subscribeAuthChange(listener) {
+  const handler = () => listener(Boolean(getToken()));
+  window.addEventListener(authChangedEvent, handler);
+  window.addEventListener("storage", handler);
+
+  return () => {
+    window.removeEventListener(authChangedEvent, handler);
+    window.removeEventListener("storage", handler);
+  };
 }
 
 export async function login(username, password) {

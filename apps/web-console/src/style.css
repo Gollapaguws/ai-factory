@@ -6,27 +6,36 @@ body {
   min-height: 100vh;
 }
 
-nav {
+.top-nav {
   position: sticky;
   top: 0;
-  z-index: 20;
-  display: flex;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
   gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: rgba(2, 6, 23, 0.7);
+  padding: 0.85rem 1rem;
+  background: rgba(2, 6, 23, 0.78);
   border-bottom: 1px solid rgba(148, 163, 184, 0.18);
   backdrop-filter: blur(10px);
 }
 
-.top-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding-right: 1rem;
+.app-brand {
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  white-space: nowrap;
 }
 
-nav a {
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.app-nav a {
   color: #cbd5e1;
   text-decoration: none;
   font-weight: 600;
@@ -36,12 +45,12 @@ nav a {
   transition: all 0.2s ease;
 }
 
-nav a:hover {
+.app-nav a:hover {
   color: #fff;
   background: rgba(99, 102, 241, 0.2);
 }
 
-nav a.active {
+.app-nav a.active {
   color: #fff;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
@@ -49,7 +58,7 @@ nav a.active {
 
 main,
 .main-content {
-  max-width: 980px;
+  max-width: 1060px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -143,6 +152,15 @@ main,
   padding: 0.55rem 0.75rem;
 }
 
+.login-form input:focus,
+.login-form textarea:focus,
+.capability-card input:focus,
+.capability-card textarea:focus,
+.capability-card select:focus {
+  outline: 2px solid rgba(129, 140, 248, 0.8);
+  outline-offset: 1px;
+}
+
 .login-form textarea {
   width: 100%;
   box-sizing: border-box;
@@ -164,6 +182,23 @@ main,
   padding: 0.55rem 0.85rem;
   cursor: pointer;
   font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.login-form button:hover,
+.logout-btn:hover,
+.capability-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+}
+
+.login-form button:disabled,
+.logout-btn:disabled,
+.capability-action:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .logout-btn {
@@ -331,4 +366,19 @@ body.light-mode .hero-subtitle,
 body.light-mode .capability-card p,
 body.light-mode .section-title {
   color: #334155;
+}
+
+@media (max-width: 860px) {
+  .top-nav {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
+
+  .app-nav {
+    gap: 0.5rem;
+  }
 }

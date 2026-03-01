@@ -4,16 +4,29 @@ services:
     restart: unless-stopped
     container_name: ai_factory_postgres
     environment:
-      POSTGRES_USER: ai
-      POSTGRES_PASSWORD: ai
-      POSTGRES_DB: ai_factory
+      POSTGRES_USER: ${POSTGRES_USER:-ai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-postgres-password}
+      POSTGRES_DB: ${POSTGRES_DB:-ai_factory}
     volumes:
       - ./infra/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ai} -d ${POSTGRES_DB:-ai_factory}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
 
   redis:
     image: redis:7
     restart: unless-stopped
     container_name: ai_factory_redis
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
 
   orchestrator-api:
     build: ./apps/orchestrator-api
@@ -21,11 +34,21 @@ services:
     container_name: ai_factory_api
     env_file:
       - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
     ports:
       - "${HOST_BIND:-127.0.0.1}:3000:3000"
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3000/health', (r) => process.exit(r.statusCode===200?0:1)).on('error', () => process.exit(1));"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
 
   worker:
     build: ./apps/worker
@@ -33,8 +56,11 @@ services:
     container_name: ai_factory_worker
     env_file:
       - .env
+    environment:
+      NODE_ENV: production
     depends_on:
-      - orchestrator-api
+      orchestrator-api:
+        condition: service_healthy
 
   web-console:
     build: ./apps/web-console
@@ -42,7 +68,20 @@ services:
     container_name: ai_factory_web
     env_file:
       - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3001
     ports:
       - "${HOST_BIND:-127.0.0.1}:3001:3001"
     depends_on:
-      - orchestrator-api
+      orchestrator-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3001/health', (r) => process.exit(r.statusCode===200?0:1)).on('error', () => process.exit(1));"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+
+volumes:
+  postgres_data:
+  redis_data:

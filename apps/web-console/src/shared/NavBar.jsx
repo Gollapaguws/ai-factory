@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function NavBar({ links }) {
   return (
-    <nav>
+    <nav className="app-nav" aria-label="Primary">
       {links.map(({ to, label, end }) => (
         <NavLink
           key={to}

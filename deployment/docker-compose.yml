@@ -2,13 +2,23 @@ version: '3.8'
 services:
   orchestrator-api:
     build: ../apps/orchestrator-api
+    environment:
+      NODE_ENV: production
+      PORT: 3000
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
   web-console:
     build: ../apps/web-console
+    environment:
+      NODE_ENV: production
+      PORT: 3001
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3001:3001"
+    depends_on:
+      - orchestrator-api
   worker:
     build: ../apps/worker
-    ports:
-      - "3002:3002"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - orchestrator-api

@@ -8,6 +8,8 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
+const nodeEnv = process.env.NODE_ENV || "development";
+const isProduction = nodeEnv === "production";
 const port = process.env.PORT || 3000;
 const jwtSecret = process.env.JWT_SECRET || "change-me-in-production";
 const tokenTtl = process.env.JWT_TTL || "12h";
@@ -15,13 +17,22 @@ const corsOrigin = process.env.CORS_ORIGIN || "*";
 const jwtIssuer = process.env.JWT_ISSUER || "ai-factory";
 const jwtAudience = process.env.JWT_AUDIENCE || "web-console";
 const oauthProvider = process.env.OAUTH_PROVIDER || "google";
-const oauthAllowedUsers = (process.env.ALLOWED_USERS || "engineer1@example.com,engineer2@example.com")
+const allowSelfRegister = (process.env.ALLOW_SELF_REGISTER || (isProduction ? "false" : "true")) === "true";
+const oauthAllowedUsers = (process.env.ALLOWED_USERS || (isProduction ? "" : "engineer1@example.com,engineer2@example.com"))
   .split(",")
   .map((value) => value.trim().toLowerCase())
   .filter(Boolean);
 
-if (process.env.NODE_ENV === "production" && jwtSecret === "change-me-in-production") {
+if (isProduction && jwtSecret === "change-me-in-production") {
   throw new Error("JWT_SECRET must be set in production");
+}
+
+if (isProduction && (corsOrigin === "*" || !corsOrigin.trim())) {
+  throw new Error("CORS_ORIGIN must be set to one or more explicit origins in production");
+}
+
+if (isProduction && oauthAllowedUsers.length === 0) {
+  throw new Error("ALLOWED_USERS must include at least one OAuth identity in production");
 }
 
 app.disable("x-powered-by");
@@ -38,15 +49,15 @@ app.use(
     crossOriginEmbedderPolicy: false,
     crossOriginOpenerPolicy: false,
     crossOriginResourcePolicy: false,
-    originAgentCluster: false,
-    referrerPolicy: false,
-    frameguard: false,
-    hsts: false,
-    noSniff: false,
-    xDnsPrefetchControl: false,
-    xDownloadOptions: false,
-    xPermittedCrossDomainPolicies: false,
-    xXssProtection: false
+    originAgentCluster: isProduction ? undefined : false,
+    referrerPolicy: isProduction ? undefined : false,
+    frameguard: isProduction ? undefined : false,
+    hsts: isProduction ? undefined : false,
+    noSniff: isProduction ? undefined : false,
+    xDnsPrefetchControl: isProduction ? undefined : false,
+    xDownloadOptions: isProduction ? undefined : false,
+    xPermittedCrossDomainPolicies: isProduction ? undefined : false,
+    xXssProtection: isProduction ? undefined : false
   })
 );
 app.use(express.json({ limit: "16kb" }));
@@ -96,6 +107,9 @@ function ensureUsersStore() {
   }
 
   if (!fs.existsSync(usersFilePath)) {
+    if (isProduction) {
+      throw new Error("users.json is missing in production; seed users or enable OAuth login first");
+    }
     fs.writeFileSync(usersFilePath, JSON.stringify(defaultUsers(), null, 2), "utf-8");
   }
 }
@@ -261,6 +275,10 @@ app.post("/auth/login", authLimiter, (req, res) => {
 });
 
 app.post("/auth/register", authLimiter, (req, res) => {
+  if (!allowSelfRegister) {
+    return res.status(403).json({ error: "self registration is disabled" });
+  }
+
   const { username, password } = req.body || {};
 
   if (!username || !password) {

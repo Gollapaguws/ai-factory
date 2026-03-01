@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes";
-import { clearToken, isAuthenticated } from "./auth";
+import { clearToken, isAuthenticated, subscribeAuthChange } from "./auth";
 
 import "./style.css";
 import NavBar from "./shared/NavBar";
@@ -12,10 +12,9 @@ function App() {
   const [authenticated, setAuthenticated] = React.useState(isAuthenticated());
 
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      setAuthenticated(isAuthenticated());
-    }, 800);
-    return () => clearInterval(interval);
+    const unsubscribe = subscribeAuthChange(setAuthenticated);
+    setAuthenticated(isAuthenticated());
+    return unsubscribe;
   }, []);
 
   const links = [
@@ -44,6 +43,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="top-nav">
+        <div className="app-brand">AI Factory</div>
         <NavBar links={links} />
         {authenticated ? (
           <button className="logout-btn" onClick={handleLogout} type="button">

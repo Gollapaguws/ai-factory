@@ -6,8 +6,8 @@ import { getOAuthConfig, login, oauthLogin } from "../auth";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [username, setUsername] = useState("alice");
-  const [password, setPassword] = useState("changeme123");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [oauthIdentity, setOauthIdentity] = useState("alice");
   const [oauthProvider, setOauthProvider] = useState("OAuth");
   const [oauthAllowlistHint, setOauthAllowlistHint] = useState("alice, bob");
@@ -75,6 +75,7 @@ export default function Login() {
             type="text"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
+            placeholder="alice"
             required
           />
         </label>
@@ -85,6 +86,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            placeholder="••••••••••"
             required
           />
         </label>
